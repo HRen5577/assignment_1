@@ -1,0 +1,6 @@
+Set-ExecutionPolicy Unrestricted -Scope Process
+python -m venv env
+.\env\Scripts\activate
+py -m pip install pycryptodome
+
+.\env\Scripts\python.exe .\ebc.py
