@@ -70,8 +70,11 @@ def ecb_encryption():
 def cbc_encryption():
     key = get_random_bytes(16)
     iv = get_random_bytes(16)
-    image_data = open("cp-logo.bmp","rb")# 54 bytes for header or 138 bytes
-    file_out = open("cp_logo_enc.bmp", "wb")
+    image_data = open("assignment1\cp-logo.bmp","rb")# 54 bytes for header or 138 bytes
+    file_out = open("assignment1\cp_logo_enc.bmp", "wb")
+
+    print(key)
+    print(type(key))
 
     read_header(image_data,file_out)
     cipher_text = read_data_cbc(key,iv,image_data)
