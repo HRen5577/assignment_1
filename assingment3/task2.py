@@ -88,15 +88,16 @@ def seperate_possible_passwords(l):
     
     return complete_list
 
-def check_word(user, word):
-        
-    hashed_line = bcrypt.hashpw(word.encode('utf-8'),user["salt"])
-    hash_start = len(user["algorithm"]) + len(user['workfactor']) + 3 + 24
-    hash = hashed_line.decode()[hash_start:]
-
-    if hash == user['hash']:
-        return word
+def check_word(user, wordList):
     
+    for word in wordList:
+        hashed_line = bcrypt.hashpw(word.encode('utf-8'),user["salt"])
+        hash_start = len(user["algorithm"]) + len(user['workfactor']) + 3 + 24
+        hash = hashed_line.decode()[hash_start:]
+
+        if hash == user['hash']:
+            return word
+        
     return None
 
 def find_passwords():
@@ -115,33 +116,29 @@ def find_passwords():
    
         all_words = seperate_possible_passwords(all_words)
 
-        found = False
-        for wordList in all_words:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-                # Start the load operations and mark each future with its URL
-                total_responses = {executor.submit(check_word, user_dict[user], word): word for word in wordList}
+        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+
+            total_responses = {executor.submit(check_word, user_dict[user], wordList): wordList for wordList in all_words}
+            
+            for future in concurrent.futures.as_completed(total_responses):
+                responses = total_responses[future]
                 
-                for future in concurrent.futures.as_completed(total_responses):
-                    url = total_responses[future]
-                    
-                    try:
-                        data = future.result()
-                        if data != None:
-                            end_time = time.time()
-                            total_time = end_time - start_time
-                            print(user, ":",data,"took",total_time)  
-                            line = str(user + "," + str(data) + "," + str(total_time))
-                            file.write(line)
-                            file.write("\n") 
-                            found = True 
-                    except Exception as exc:
-                        pass
-                        #print('%r generated an exception: %s' % (url, exc))
-                    else:  
-                        pass
-                        #print("Something happened")
-            if found == True:
-                break
+                try:
+                    data = future.result()
+                    if data != None:
+                        end_time = time.time()
+                        total_time = end_time - start_time
+                        print(user, ":",data,"took",total_time)  
+                        line = str(user + "," + str(data) + "," + str(total_time))
+                        file.write(line)
+                        file.write("\n") 
+                        found = True 
+                except Exception as exc:
+                    pass
+                    #print('%r generated an exception: %s' % (url, exc))
+                else:  
+                    pass
+                    #print("Something happened")
 
     file.close()
 

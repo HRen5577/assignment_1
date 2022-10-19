@@ -35,6 +35,9 @@ def part_a(word):
 def part_b(word1,word2):
     print("---------------- Part B -------------------")
     hamming_distance(word1,word2)
+    print("-------------------------------------------")
+    print(word1,"hased to:",hash_input(word1).hexdigest())
+    print(word2,"hased to:",hash_input(word2).hexdigest())
     print("---------------- END -------------------")
 
 
@@ -66,7 +69,6 @@ def part_c():
     f.write("\n")
     
     for i in range(1,26):
-        total_bits_seen = []
         total_dict = {}
         
         start_time = time.time()
@@ -111,7 +113,7 @@ def part_c():
                 f.write("\n")
                 collision = True
                 total_inputs = 0
-            elif bits_int not in total_bits_seen:
+            else:
                 total_dict[bits_int] = current_word1
                 
                 
@@ -125,5 +127,5 @@ if __name__ == "__main__":
     word2 = "hellm"
 
     #part_a(input_word)
-    #part_b(word1,word2)
-    part_c()
+    part_b(word1,word2)
+    #part_c()
