@@ -1,0 +1,11 @@
+
+            #hobbit plain text
+            
+            # print("------------")            
+            # print(hash_obj1.hexdigest())
+            # print(hash_obj2.hexdigest())
+            # print("----------")
+            # print(type(truncated1))
+            # print(truncated1)
+            # print(type(bin(int(truncated1, 16))[2:].zfill(current_bits)))
+            # print("------------")
