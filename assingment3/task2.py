@@ -132,7 +132,6 @@ def find_passwords():
                         line = str(user + "," + str(data) + "," + str(total_time))
                         file.write(line)
                         file.write("\n") 
-                        found = True 
                 except Exception as exc:
                     pass
                     #print('%r generated an exception: %s' % (url, exc))
@@ -144,7 +143,6 @@ def find_passwords():
 
 
 def main():
-    #generate_test_file()
     find_passwords()
 
 main()
